@@ -299,20 +299,24 @@ describe('selectUpComingBookings()', () => {
 })
 
 describe('selectFinishedEventBookings()', () => {
-  it('should not return bookings on thing types', () => {
+  it('should return finished bookings', () => {
     // given
-
-    const thingOffer = {
+    const offerBookable = {
       id: 'o1',
+      isNotBookable: false,
+    }
+    const offerNotBookable = {
+      id: 'o2',
       isNotBookable: true,
-      isEvent: false,
     }
-
-    const stock = {
+    const stockBookableOffer = {
       id: 's1',
-      offerId: thingOffer.id,
+      offerId: offerBookable.id,
     }
-
+    const stockNotBookableOffer = {
+      id: 's2',
+      offerId: offerNotBookable.id,
+    }
     const state = {
       data: {
         bookings: [
@@ -320,162 +324,53 @@ describe('selectFinishedEventBookings()', () => {
             id: 'b1',
             isCancelled: false,
             isEventExpired: false,
-            stockId: stock.id,
+            stockId: stockBookableOffer.id,
           },
-        ],
-        offers: [thingOffer],
-        stocks: [stock],
-      },
-    }
-
-    // when
-    const results = selectFinishedEventBookings(state)
-
-    // then
-    expect(results).toStrictEqual([])
-  })
-
-  it('should not return cancelled bookings', () => {
-    // given
-
-    const offer = {
-      id: 'o1',
-      isNotBookable: true,
-      isEvent: true,
-    }
-
-    const stock = {
-      id: 's1',
-      offerId: offer.id,
-    }
-
-    const state = {
-      data: {
-        bookings: [
           {
-            id: 'b1',
+            id: 'b2',
+            isCancelled: true,
+            isEventExpired: true,
+            stockId: stockBookableOffer.id,
+          },
+          {
+            id: 'b3',
             isCancelled: true,
             isEventExpired: false,
-            stockId: stock.id,
+            stockId: stockBookableOffer.id,
           },
-        ],
-        offers: [offer],
-        stocks: [stock],
-      },
-    }
-
-    // when
-    const results = selectFinishedEventBookings(state)
-
-    // then
-    expect(results).toStrictEqual([])
-  })
-
-  it('should not return bookings that are bookable and not expired', () => {
-    // given
-
-    const offer = {
-      id: 'o1',
-      isNotBookable: false,
-      isEvent: true,
-    }
-
-    const stock = {
-      id: 's1',
-      offerId: offer.id,
-    }
-
-    const state = {
-      data: {
-        bookings: [
           {
-            id: 'b1',
-            isCancelled: true,
-            isEventExpired: false,
-            stockId: stock.id,
-          },
-        ],
-        offers: [offer],
-        stocks: [stock],
-      },
-    }
-
-    // when
-    const results = selectFinishedEventBookings(state)
-
-    // then
-    expect(results).toStrictEqual([])
-  })
-
-  it('should return bookings on events that are not cancelled and not bookable', () => {
-    // given
-
-    const offer = {
-      id: 'o1',
-      isNotBookable: true,
-      isEvent: true,
-    }
-
-    const stock = {
-      id: 's1',
-      offerId: offer.id,
-    }
-
-    const state = {
-      data: {
-        bookings: [
-          {
-            id: 'b1',
-            isCancelled: false,
-            isEventExpired: false,
-            stockId: stock.id,
-          },
-        ],
-        offers: [offer],
-        stocks: [stock],
-      },
-    }
-
-    // when
-    const results = selectFinishedEventBookings(state)
-
-    // then
-    expect(results).toStrictEqual([
-      {
-        id: 'b1',
-        isCancelled: false,
-        isEventExpired: false,
-        stockId: stock.id,
-      },
-    ])
-  })
-
-  it('should return bookings on events that are not cancelled and is event expired', () => {
-    // given
-
-    const offer = {
-      id: 'o1',
-      isNotBookable: false,
-      isEvent: true,
-    }
-
-    const stock = {
-      id: 's1',
-      offerId: offer.id,
-    }
-
-    const state = {
-      data: {
-        bookings: [
-          {
-            id: 'b1',
+            id: 'b4',
             isCancelled: false,
             isEventExpired: true,
-            stockId: stock.id,
+            stockId: stockBookableOffer.id,
+          },
+          {
+            id: 'b5',
+            isCancelled: false,
+            isEventExpired: false,
+            stockId: stockNotBookableOffer.id,
+          },
+          {
+            id: 'b6',
+            isCancelled: true,
+            isEventExpired: true,
+            stockId: stockNotBookableOffer.id,
+          },
+          {
+            id: 'b7',
+            isCancelled: true,
+            isEventExpired: false,
+            stockId: stockNotBookableOffer.id,
+          },
+          {
+            id: 'b8',
+            isCancelled: false,
+            isEventExpired: true,
+            stockId: stockNotBookableOffer.id,
           },
         ],
-        offers: [offer],
-        stocks: [stock],
+        offers: [offerBookable, offerNotBookable],
+        stocks: [stockBookableOffer, stockNotBookableOffer],
       },
     }
 
@@ -485,10 +380,22 @@ describe('selectFinishedEventBookings()', () => {
     // then
     expect(results).toStrictEqual([
       {
-        id: 'b1',
+        id: 'b4',
         isCancelled: false,
         isEventExpired: true,
-        stockId: stock.id,
+        stockId: stockBookableOffer.id,
+      },
+      {
+        id: 'b5',
+        isCancelled: false,
+        isEventExpired: false,
+        stockId: stockNotBookableOffer.id,
+      },
+      {
+        id: 'b8',
+        isCancelled: false,
+        isEventExpired: true,
+        stockId: stockNotBookableOffer.id,
       },
     ])
   })

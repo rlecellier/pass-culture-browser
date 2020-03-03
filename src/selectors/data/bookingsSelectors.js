@@ -115,11 +115,7 @@ export const selectFinishedEventBookings = createSelector(
       const filteredStock = selectStockById({ data: { stocks } }, booking.stockId)
       const filteredOffer = selectOfferById({ data: { offers } }, filteredStock.offerId)
 
-      return (
-        filteredOffer.isEvent &&
-        !booking.isCancelled &&
-        (filteredOffer.isNotBookable || booking.isEventExpired)
-      )
+      return !booking.isCancelled && (filteredOffer.isNotBookable || booking.isEventExpired)
     })
 )
 
