@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { assignData, deleteData, requestData } from 'redux-thunk-data'
 import { saveLastRecommendationsRequestTimestamp } from '../../../reducers/data'
 import { updateSeedLastRequestTimestamp } from '../../../reducers/pagination'
-import { selectReadRecommendations } from '../../../selectors/data/readRecommendationsSelectors'
+import {selectReadRecommendations} from '../../../selectors/data/readRecommendationsSelectors'
 import { selectRecommendations } from '../../../selectors/data/recommendationsSelectors'
 import { selectSeedLastRequestTimestamp } from '../../../selectors/pagination/paginationSelector'
 import getOfferIdAndMediationIdApiPathQueryString from '../../../utils/getOfferIdAndMediationIdApiPathQueryString'
@@ -16,6 +16,7 @@ import {
   checkIfShouldReloadRecommendationsBecauseOfLongTime,
   isDiscoveryStartupUrl,
 } from './utils/utils'
+import { seenOffersSelector } from '../../../selectors/seenOffers/seenOffersSelector'
 
 export const mapStateToProps = (state, ownProps) => {
   const { match } = ownProps
@@ -25,6 +26,7 @@ export const mapStateToProps = (state, ownProps) => {
   const tutorials = selectTutorials(state)
   const recommendations = selectRecommendations(state)
   const readRecommendations = selectReadRecommendations(state)
+  const seenOffers = seenOffersSelector(state)
   const hasNoRecommendations = recommendations && recommendations.length === 0
   const shouldReloadRecommendations =
     checkIfShouldReloadRecommendationsBecauseOfLongTime(state) || hasNoRecommendations
@@ -34,6 +36,7 @@ export const mapStateToProps = (state, ownProps) => {
     currentRecommendation,
     readRecommendations,
     recommendations,
+    seenOffers,
     seedLastRequestTimestamp,
     shouldReloadRecommendations,
     tutorials,
@@ -50,6 +53,7 @@ export const mapDispatchToProps = (dispatch, prevProps) => ({
     currentRecommendation,
     recommendations,
     readRecommendations,
+    seenOffers,
     shouldReloadRecommendations
   ) => {
     const { match } = prevProps
@@ -64,6 +68,7 @@ export const mapDispatchToProps = (dispatch, prevProps) => ({
         body: {
           readRecommendations,
           seenRecommendationIds,
+          seenOffers
         },
         handleFail: handleFail,
         handleSuccess: handleSuccess,
@@ -90,6 +95,9 @@ export const mapDispatchToProps = (dispatch, prevProps) => ({
   },
   resetReadRecommendations: () => {
     dispatch(assignData({ readRecommendations: [] }))
+  },
+  resetSeenOffers: () => {
+    dispatch(assignData({ seenOffers: [] }))
   },
   saveLastRecommendationsRequestTimestamp: () => {
     dispatch(saveLastRecommendationsRequestTimestamp())

@@ -82,6 +82,7 @@ class Discovery extends PureComponent {
     const {
       recommendations,
       resetReadRecommendations,
+      resetSeenOffers,
       redirectToFirstRecommendationIfNeeded,
     } = this.props
 
@@ -91,6 +92,7 @@ class Discovery extends PureComponent {
 
     this.setState({ atWorldsEnd, hasNoMoreRecommendations, isLoading: false }, () => {
       resetReadRecommendations()
+      resetSeenOffers()
       redirectToFirstRecommendationIfNeeded(loadedRecommendations)
     })
   }
@@ -100,6 +102,7 @@ class Discovery extends PureComponent {
       currentRecommendation,
       loadRecommendations,
       readRecommendations,
+      seenOffers,
       recommendations,
       shouldReloadRecommendations,
     } = this.props
@@ -116,6 +119,7 @@ class Discovery extends PureComponent {
         currentRecommendation,
         recommendations,
         readRecommendations,
+        seenOffers,
         shouldReloadRecommendations
       )
     })
@@ -191,9 +195,11 @@ Discovery.propTypes = {
   recommendations: PropTypes.arrayOf(PropTypes.shape()),
   redirectToFirstRecommendationIfNeeded: PropTypes.func.isRequired,
   resetReadRecommendations: PropTypes.func.isRequired,
+  resetSeenOffers: PropTypes.func.isRequired,
   resetRecommendations: PropTypes.func.isRequired,
   saveLastRecommendationsRequestTimestamp: PropTypes.func.isRequired,
   seedLastRequestTimestamp: PropTypes.number.isRequired,
+  seenOffers: PropTypes.arrayOf(PropTypes.shape()),
   shouldReloadRecommendations: PropTypes.bool.isRequired,
   tutorials: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   updateLastRequestTimestamp: PropTypes.func.isRequired,

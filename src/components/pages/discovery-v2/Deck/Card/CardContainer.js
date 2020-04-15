@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withSizes from 'react-sizes'
 import { compose } from 'redux'
-import { mergeData, requestData } from 'redux-thunk-data'
+import {assignData, mergeData, requestData} from 'redux-thunk-data'
 
 import Card from './Card'
 import { getRecommendationSelectorByCardPosition } from '../../utils/utils'
 import { recommendationNormalizer } from '../../../../../utils/normalizers'
+import {selectCurrentUser} from "../../../../../selectors/data/usersSelectors";
+import {editSeenOffers} from "../../../../../reducers/seenOffers";
 
 export const mapStateToProps = (state, ownProps) => {
   const { match, position } = ownProps
@@ -15,8 +17,11 @@ export const mapStateToProps = (state, ownProps) => {
   const { mediationId, offerId } = params
   const recommendationSelector = getRecommendationSelectorByCardPosition(position)
   const recommendation = recommendationSelector(state, offerId, mediationId)
+  const user = selectCurrentUser(state)
   return {
     recommendation,
+    user,
+    offerId
   }
 }
 
@@ -42,6 +47,15 @@ export const mapDispatchToProps = dispatch => ({
         readRecommendations: [readRecommendation],
       })
     )
+  },
+
+  handleSeenOffer: (newSeenOffer) => {
+    const seenOffer = {
+      dateSeen: moment.utc().toISOString(),
+      offerId: newSeenOffer.offerId,
+      userId: newSeenOffer.userId,
+    }
+    dispatch(editSeenOffers(seenOffer))
   },
 })
 
