@@ -48,6 +48,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         pagination: {
           seedLastRequestTimestamp: 11111111112,
         },
+        seenOffers : [],
       }
 
       const ownProps = {
@@ -77,6 +78,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         readRecommendations: undefined,
         recommendations: [],
         seedLastRequestTimestamp: 11111111112,
+        seenOffers: [],
         shouldReloadRecommendations: true,
         tutorials: [],
       })
@@ -92,6 +94,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         const currentRecommendation = {}
         const recommendations = []
         const readRecommendations = null
+        const seenOffers = null
         const shouldReloadRecommendations = false
         const functions = mapDispatchToProps(dispatch, props)
         const { loadRecommendations } = functions
@@ -103,6 +106,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           currentRecommendation,
           recommendations,
           readRecommendations,
+          seenOffers,
           shouldReloadRecommendations
         )
 
@@ -113,6 +117,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
             body: {
               readRecommendations: null,
               seenRecommendationIds: [],
+              seenOffers: null
             },
             handleFail: handleRequestFail,
             handleSuccess: handleRequestSuccess,
@@ -130,6 +135,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         const currentRecommendation = { mediationId: 'tuto' }
         const recommendations = []
         const readRecommendations = null
+        const seenOffers = null
         const shouldReloadRecommendations = false
         const functions = mapDispatchToProps(dispatch, props)
         const { loadRecommendations } = functions
@@ -141,6 +147,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           currentRecommendation,
           recommendations,
           readRecommendations,
+          seenOffers,
           shouldReloadRecommendations
         )
 
@@ -151,6 +158,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
             body: {
               readRecommendations: null,
               seenRecommendationIds: [],
+              seenOffers: null
             },
             handleFail: handleRequestFail,
             handleSuccess: handleRequestSuccess,
@@ -168,6 +176,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         const currentRecommendation = { mediationId: 'fin' }
         const recommendations = []
         const readRecommendations = null
+        const seenOffers = null
         const shouldReloadRecommendations = false
         const functions = mapDispatchToProps(dispatch, props)
         const { loadRecommendations } = functions
@@ -179,6 +188,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           currentRecommendation,
           recommendations,
           readRecommendations,
+          seenOffers,
           shouldReloadRecommendations
         )
 
@@ -189,6 +199,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
             body: {
               readRecommendations: null,
               seenRecommendationIds: [],
+              seenOffers: null
             },
             handleFail: handleRequestFail,
             handleSuccess: handleRequestSuccess,
@@ -206,6 +217,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         const currentRecommendation = { mediationId: 'vide' }
         const recommendations = []
         const readRecommendations = null
+        const seenOffers = null
         const shouldReloadRecommendations = false
         const functions = mapDispatchToProps(dispatch, props)
         const { loadRecommendations } = functions
@@ -217,6 +229,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           currentRecommendation,
           recommendations,
           readRecommendations,
+          seenOffers,
           shouldReloadRecommendations
         )
 
@@ -227,6 +240,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
             body: {
               readRecommendations: null,
               seenRecommendationIds: [],
+              seenOffers: null
             },
             handleFail: handleRequestFail,
             handleSuccess: handleRequestSuccess,
@@ -249,6 +263,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
         const recommendations = [{ id: 'AE3', index: 3, offerId: 'AE4' }]
         const readRecommendations = null
         const shouldReloadRecommendations = false
+        const seenOffers = null
         const functions = mapDispatchToProps(dispatch, props)
         const { loadRecommendations } = functions
 
@@ -259,6 +274,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           currentRecommendation,
           recommendations,
           readRecommendations,
+          seenOffers,
           shouldReloadRecommendations
         )
 
@@ -269,6 +285,7 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
             body: {
               readRecommendations: null,
               seenRecommendationIds: ['AE4'],
+              seenOffers: null
             },
             handleFail: handleRequestFail,
             handleSuccess: handleRequestSuccess,
@@ -278,6 +295,60 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
           type: 'REQUEST_DATA_PUT_/RECOMMENDATIONS/V2?',
         })
       })
+
+      it('should load offers seen by beneficiary  ', () => {
+        // given
+        const handleRequestSuccess = jest.fn()
+        const handleRequestFail = jest.fn()
+        const currentRecommendation = {}
+        const recommendations = [{ id: 'AE3', index: 3, offerId: 'AE4' }]
+        const readRecommendations = null
+        const shouldReloadRecommendations = false
+        const seenOffers = [
+          {
+          userId: 'FY',
+          offerId: 'AE4',
+          dateSeen:"2020-04-16T15:57:27.063Z"
+        }
+        ]
+        const functions = mapDispatchToProps(dispatch, props)
+        const { loadRecommendations } = functions
+
+        // when
+        loadRecommendations(
+          handleRequestSuccess,
+          handleRequestFail,
+          currentRecommendation,
+          recommendations,
+          readRecommendations,
+          seenOffers,
+          shouldReloadRecommendations
+        )
+
+        // then
+        expect(dispatch.mock.calls[0][0]).toStrictEqual({
+          config: {
+            apiPath: `/recommendations/v2?`,
+            body: {
+              readRecommendations: null,
+              seenRecommendationIds: ['AE4'],
+              seenOffers: [
+                {
+                  userId: 'FY',
+                  offerId: 'AE4',
+                  dateSeen:"2020-04-16T15:57:27.063Z"
+                }
+              ]
+            },
+            handleFail: handleRequestFail,
+            handleSuccess: handleRequestSuccess,
+            method: 'PUT',
+            normalizer: recommendationNormalizer,
+          },
+          type: 'REQUEST_DATA_PUT_/RECOMMENDATIONS/V2?',
+        })
+      })
+
     })
 
     describe('when mapping redirectToFirstRecommendationIfNeeded', () => {
@@ -422,14 +493,27 @@ describe('src | components | pages | discovery | DiscoveryContainer', () => {
       })
     })
 
-    describe('when mapping resetRecommandations', () => {
-      it('should delete all recommandations in the store', () => {
+    describe('when mapping resetRecommendations', () => {
+      it('should delete all recommandetions in the store', () => {
         // when
         mapDispatchToProps(dispatch, props).resetRecommendations()
 
         // then
         expect(dispatch).toHaveBeenCalledWith({
           patch: { recommendations: [] },
+          type: 'ASSIGN_DATA',
+        })
+      })
+    })
+
+    describe('when mapping resetSeenOffers', () => {
+      it('should delete all recommandations in the store', () => {
+        // when
+        mapDispatchToProps(dispatch, props).resetSeenOffers()
+
+        // then
+        expect(dispatch).toHaveBeenCalledWith({
+          patch: { seenOffers: [] },
           type: 'ASSIGN_DATA',
         })
       })

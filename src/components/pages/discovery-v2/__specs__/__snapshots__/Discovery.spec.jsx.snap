@@ -38,8 +38,10 @@ ShallowWrapper {
     resetReadRecommendations={[MockFunction]}
     resetRecommendations={[MockFunction]}
     resetRecommendationsAndBookings={[MockFunction]}
+    resetSeenOffers={[MockFunction]}
     saveLastRecommendationsRequestTimestamp={[MockFunction]}
     seedLastRequestTimestamp={1574236357670}
+    seenOffers={Array []}
     shouldReloadRecommendations={false}
     tutorials={Array []}
     updateLastRequestTimestamp={[MockFunction]}

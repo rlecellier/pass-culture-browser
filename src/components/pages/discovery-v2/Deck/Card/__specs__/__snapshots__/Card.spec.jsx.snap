@@ -13,6 +13,7 @@ ShallowWrapper {
     }
     position="position"
     recommendation={null}
+    seenOffer={Array []}
     width={500}
   />,
   Symbol(enzyme.__renderer__): Object {

@@ -177,6 +177,7 @@ Discovery.defaultProps = {
   currentRecommendation: null,
   readRecommendations: null,
   recommendations: null,
+  seenOffers: null,
 }
 
 Discovery.propTypes = {
@@ -195,8 +196,8 @@ Discovery.propTypes = {
   recommendations: PropTypes.arrayOf(PropTypes.shape()),
   redirectToFirstRecommendationIfNeeded: PropTypes.func.isRequired,
   resetReadRecommendations: PropTypes.func.isRequired,
-  resetSeenOffers: PropTypes.func.isRequired,
   resetRecommendations: PropTypes.func.isRequired,
+  resetSeenOffers: PropTypes.func.isRequired,
   saveLastRecommendationsRequestTimestamp: PropTypes.func.isRequired,
   seedLastRequestTimestamp: PropTypes.number.isRequired,
   seenOffers: PropTypes.arrayOf(PropTypes.shape()),

@@ -26,9 +26,11 @@ describe('src | components | pages | discovery | Discovery', () => {
       redirectToFirstRecommendationIfNeeded: jest.fn(),
       resetReadRecommendations: jest.fn(),
       resetRecommendations: jest.fn(),
+      resetSeenOffers: jest.fn(),
       resetRecommendationsAndBookings: jest.fn(),
       saveLastRecommendationsRequestTimestamp: jest.fn(),
       seedLastRequestTimestamp: 1574236357670,
+      seenOffers: [],
       shouldReloadRecommendations: false,
       tutorials: [],
       updateLastRequestTimestamp: jest.fn(),
@@ -74,6 +76,7 @@ describe('src | components | pages | discovery | Discovery', () => {
         props.currentRecommendation,
         props.recommendations,
         props.readRecommendations,
+        props.seenOffers,
         props.shouldReloadRecommendations
       )
       expect(props.saveLastRecommendationsRequestTimestamp).toHaveBeenCalledWith()
@@ -215,6 +218,22 @@ describe('src | components | pages | discovery | Discovery', () => {
 
         // then
         expect(props.resetReadRecommendations).toHaveBeenCalledWith()
+      })
+
+      it('should reset seen offers', () => {
+        // given
+        const action = {
+          payload: {
+            data: [{ id: 'AB' }],
+          },
+        }
+        const wrapper = shallow(<Discovery {...props} />)
+
+        // when
+        wrapper.instance().handleSuccess({}, action)
+
+        // then
+        expect(props.resetSeenOffers).toHaveBeenCalledWith()
       })
 
       it('should set atWorldsEnd state to true when no recommendations have been fetched', () => {

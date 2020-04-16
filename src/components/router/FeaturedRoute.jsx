@@ -6,7 +6,7 @@ import NotMatch from '../pages/not-match/NotMatch'
 
 class FeaturedRoute extends PureComponent {
   componentDidMount() {
-    const { areFeaturesLoaded, requestGetFeatures, requestSeenOffers } = this.props
+    const { areFeaturesLoaded, requestGetFeatures } = this.props
 
     if (areFeaturesLoaded) {
       return
@@ -38,7 +38,6 @@ FeaturedRoute.propTypes = {
   areFeaturesLoaded: PropTypes.bool.isRequired,
   isRouteDisabled: PropTypes.bool.isRequired,
   requestGetFeatures: PropTypes.func.isRequired,
-  requestSeenOffers: PropTypes.func.isRequired,
 }
 
 export default FeaturedRoute
