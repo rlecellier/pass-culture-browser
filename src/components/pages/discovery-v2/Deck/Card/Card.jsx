@@ -7,15 +7,17 @@ import VersoContainer from '../../../../layout/Verso/VersoContainer'
 
 class Card extends PureComponent {
   componentDidMount() {
-    const { handleReadRecommendation, handleSeenOffer, position, recommendation, user, offerId } = this.props
-    const newSeenOffer = {
-      offerId: offerId,
-      userId: user.id
-    }
+    const {
+      handleReadRecommendation,
+      handleSeenOffer,
+      position,
+      recommendation,
+      seenOffer,
+    } = this.props
     const isFirstHasJustBeenRead = position === 'previous'
     if (isFirstHasJustBeenRead) {
       handleReadRecommendation(recommendation)
-      handleSeenOffer(newSeenOffer)
+      handleSeenOffer(seenOffer)
     }
   }
 
@@ -26,15 +28,10 @@ class Card extends PureComponent {
       handleSeenOffer,
       match,
       recommendation,
-      user,
-      offerId,
       position,
+      seenOffer,
     } = this.props
     const areDetailsNowVisible = isDetailsView(match) && !isDetailsView(prevProps.match)
-    const newSeenOffer = {
-      offerId: offerId,
-      userId: user.id
-    }
     const isCurrent = recommendation && position === 'current'
 
     const hasJustBeenRead =
@@ -43,7 +40,7 @@ class Card extends PureComponent {
         (prevProps.recommendation && prevProps.recommendation.id)
     if (hasJustBeenRead) {
       handleReadRecommendation(recommendation)
-      handleSeenOffer(newSeenOffer)
+      handleSeenOffer(seenOffer)
     }
 
     if (!isCurrent) return
@@ -80,6 +77,7 @@ class Card extends PureComponent {
 
 Card.defaultProps = {
   recommendation: null,
+  seenOffer: [],
 }
 
 Card.propTypes = {
@@ -93,7 +91,7 @@ Card.propTypes = {
   }).isRequired,
   position: PropTypes.string.isRequired,
   recommendation: PropTypes.shape(),
-  seenOffers: PropTypes.shape(),
+  seenOffer: PropTypes.shape(),
   width: PropTypes.number.isRequired,
 }
 

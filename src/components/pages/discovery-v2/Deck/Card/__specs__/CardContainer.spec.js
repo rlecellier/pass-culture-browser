@@ -11,6 +11,12 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       // given
       const { store } = configureStore()
       const state = store.getState()
+      state.data.users = [
+        {
+          id: 'FY',
+        },
+      ]
+
       const ownProps = {
         match: { params: {} },
       }
@@ -21,6 +27,10 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       // then
       const expected = {
         recommendation: undefined,
+        seenOffer: {
+          offerId: undefined,
+          userId: 'FY',
+        },
       }
       expect(result).toStrictEqual(expected)
     })
@@ -44,6 +54,21 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       expect(moment(readRecommendations[0].dateRead).isSame(moment.utc(), 'minutes')).toStrictEqual(
         true
       )
+    })
+    it('handleSeenOffer', () => {
+      // given
+      const { store } = configureStore()
+      const seenOffer = { offerId: 'AE', userId: 'FY' }
+
+      // when
+      mapDispatchToProps(store.dispatch).handleSeenOffer(seenOffer)
+
+      // then
+      const { seenOffers } = store.getState()
+      expect(seenOffers).toHaveLength(1)
+      expect(seenOffers[0].offerId).toStrictEqual('AE')
+      expect(seenOffers[0].userId).toStrictEqual('FY')
+      expect(moment(seenOffers[0].dateRead).isSame(moment.utc(), 'minutes')).toStrictEqual(true)
     })
   })
 })
