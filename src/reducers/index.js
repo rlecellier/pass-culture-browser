@@ -8,14 +8,14 @@ import share from './share'
 import splash from './splash'
 import token from './token'
 import maintenanceReducer from './maintenanceReducer'
-import seenOffers from './seenOffers'
+import persistSeenOffersReducer from './seenOffers'
 
 const rootReducer = combineReducers({
   data,
   geolocation,
   lastRecommendationsRequestTimestamp,
   maintenance: maintenanceReducer,
-  seenOffers,
+  persistSeenOffersReducer,
   menu,
   overlay,
   pagination,

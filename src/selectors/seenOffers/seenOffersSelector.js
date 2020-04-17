@@ -1,1 +1,1 @@
-export const seenOffersSelector = state => state.seenOffers
+export const seenOffersSelector = state => state.persistSeenOffersReducer.seenOffers
