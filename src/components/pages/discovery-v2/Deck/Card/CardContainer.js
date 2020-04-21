@@ -40,10 +40,12 @@ export const mapDispatchToProps = dispatch => ({
     )
   },
 
-  handleReadRecommendation: recommendation => {
+  handleReadRecommendation: (recommendation, seenOffer) => {
     const readRecommendation = {
       dateRead: moment.utc().toISOString(),
       id: recommendation.id,
+      offerId: seenOffer.offerId,
+      userId: seenOffer.userId,
     }
     dispatch(
       mergeData({

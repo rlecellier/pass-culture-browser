@@ -16,7 +16,7 @@ class Card extends PureComponent {
     } = this.props
     const isFirstHasJustBeenRead = position === 'previous'
     if (isFirstHasJustBeenRead) {
-      handleReadRecommendation(recommendation)
+      handleReadRecommendation(recommendation, seenOffer)
       handleSeenOffer(seenOffer)
     }
   }
@@ -39,7 +39,7 @@ class Card extends PureComponent {
       (recommendation && recommendation.id) !==
         (prevProps.recommendation && prevProps.recommendation.id)
     if (hasJustBeenRead) {
-      handleReadRecommendation(recommendation)
+      handleReadRecommendation(recommendation, seenOffer)
       handleSeenOffer(seenOffer)
     }
 
