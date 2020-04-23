@@ -11,18 +11,32 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       // given
       const { store } = configureStore()
       const state = store.getState()
+      jest.spyOn(Date, 'now').mockImplementation(() => '2020-01-01T20:00:00Z')
+      state.data.users = [
+        {
+          id: 'FY',
+        },
+      ]
       const ownProps = {
-        match: { params: {} },
+        match: {
+          params: {
+            offerId: 'AE',
+          },
+        },
       }
 
       // when
       const result = mapStateToProps(state, ownProps)
 
       // then
-      const expected = {
+      expect(result).toStrictEqual({
         recommendation: undefined,
-      }
-      expect(result).toStrictEqual(expected)
+        seenOffer: {
+          dateSeen: '2020-01-01T20:00:00.000Z',
+          offerId: 'AE',
+          userId: 'FY',
+        },
+      })
     })
   })
 
