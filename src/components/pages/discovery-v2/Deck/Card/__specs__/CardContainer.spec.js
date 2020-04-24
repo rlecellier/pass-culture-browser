@@ -34,6 +34,15 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
           id: 'FY',
         },
       ]
+
+      state.data.features = [
+        {
+          id: '2M',
+          isActive: true,
+          nameKey: 'SAVE_SEEN_OFFERS',
+        },
+      ]
+
       const ownProps = {
         match: {
           params: {
@@ -52,6 +61,7 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
           offerId: 'AE',
           userId: 'FY',
         },
+        isSeenOfferFeatureActive: true,
       })
     })
   })

@@ -21,8 +21,15 @@ export const mapStateToProps = (state, ownProps) => {
     userId: user.id,
     offerId: offerId,
   }
+  const { data } = state
+  const { features } = data
+  console.log(features[0].nameKey)
+  console.log(features[0].nameKey === 'SAVE_SEEN_OFFERS')
+  const seenOfferFeature = features.filter(feature => feature.nameKey === 'SAVE_SEEN_OFFERS')
+  const isSeenOfferFeatureActive = seenOfferFeature.isActive
 
   return {
+    isSeenOfferFeatureActive,
     recommendation,
     seenOffer,
   }
@@ -69,8 +76,5 @@ const mapSizeToProps = ({ width, height }) => ({
 export default compose(
   withSizes(mapSizeToProps),
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(Card)
