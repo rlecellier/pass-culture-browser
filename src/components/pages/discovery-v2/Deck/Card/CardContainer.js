@@ -20,7 +20,6 @@ export const mapStateToProps = (state, ownProps) => {
   const seenOffer = {
     userId: user.id,
     offerId: offerId,
-    dateSeen: moment.utc().toISOString(),
   }
 
   return {
@@ -43,7 +42,7 @@ export const mapDispatchToProps = dispatch => ({
   handleSeenOffer: seenOffer => {
     dispatch(
       requestData({
-        apiPath: '/recommendations/seen_offers',
+        apiPath: '/seen_offers',
         body: seenOffer,
         method: 'PUT',
       })

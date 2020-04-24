@@ -5,13 +5,29 @@ import { configureStore } from '../../../../../../utils/store'
 
 navigator.geolocation = {}
 
+jest.mock('redux-thunk-data', () => ({
+  ...jest.requireActual('redux-thunk-data'),
+  requestData: () => {
+    return {
+      type: 'REQUEST_DATA',
+      config: {
+        apiPath: '/seen_offers',
+        body: {
+          offerId: 'AE',
+          userId: 'FY',
+        },
+        method: 'PUT',
+      },
+    }
+  },
+}))
+
 describe('src | components | pages | discovery | Deck | Card | CardContainer', () => {
   describe('mapStateToProps', () => {
     it('default return', () => {
       // given
       const { store } = configureStore()
       const state = store.getState()
-      jest.spyOn(Date, 'now').mockImplementation(() => '2020-01-01T20:00:00Z')
 
       state.data.users = [
         {
@@ -33,7 +49,6 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       expect(result).toStrictEqual({
         recommendation: undefined,
         seenOffer: {
-          dateSeen: '2020-01-01T20:00:00.000Z',
           offerId: 'AE',
           userId: 'FY',
         },
@@ -59,6 +74,28 @@ describe('src | components | pages | discovery | Deck | Card | CardContainer', (
       expect(moment(readRecommendations[0].dateRead).isSame(moment.utc(), 'minutes')).toStrictEqual(
         true
       )
+    })
+
+    it('handleSeenOffer', () => {
+      // given
+      const dispatch = jest.fn()
+      const seenOffer = {
+        offerId: 'AE',
+        userId: 'FY',
+      }
+
+      // when
+      mapDispatchToProps(dispatch).handleSeenOffer(seenOffer)
+
+      // then
+      expect(dispatch).toHaveBeenCalledWith({
+        type: 'REQUEST_DATA',
+        config: {
+          apiPath: '/seen_offers',
+          body: seenOffer,
+          method: 'PUT',
+        },
+      })
     })
   })
 })

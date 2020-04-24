@@ -11,7 +11,7 @@ describe('src | components | pages | discovery | Deck | Card', () => {
         handleClickRecommendation: jest.fn(),
         handleReadRecommendation: jest.fn(),
         match: { params: {} },
-        position: 'position',
+        position: 'current',
         width: 500,
         handleSeenOffer: jest.fn(),
         seenOffer: {},

@@ -15,7 +15,8 @@ class Card extends PureComponent {
       seenOffer,
     } = this.props
 
-    if (recommendation) {
+    const isFirstHasJustBeenSeen = recommendation && position === 'current'
+    if (isFirstHasJustBeenSeen) {
       handleSeenOffer(seenOffer)
     }
 
