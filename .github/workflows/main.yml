@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [ PC-3391-poc-github-actions ]
+  pull_request:
+    branches: [ PC-3391-poc-github-actions ]
+
+jobs:
+  unit-tests:
+    name: Tests unitaires
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Checkout api
+      uses: actions/checkout@v2
+      with:
+        repository: betagouv/pass-culture-api
+        path: api
+
+    - name: Checkout main
+      uses: actions/checkout@v2
+      with:
+        repository: betagouv/pass-culture-main
+        path: pass-culture-main
+    
+    - name: Initialization environment
+      run: |
+            cd pass-culture-main
+            sudo curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            rm -rf shared
+      env: 
+        DOCKER_COMPOSE_VERSION: '1.25.4'
+
+    - name: Read .nvmrc
+      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      id: nvm
+    
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+    - name: install dependencies
+      run : |
+        yarn install
+    
+    - name : Running Unit Tests
+      run : |
+        yarn run test:unit --coverage
+
+    - name: Install dockerize
+      run: |
+        wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+        sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+        rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+      env:
+        DOCKERIZE_VERSION: v0.6.1 
+        
+    - name: Running API server
+      run: |
+        cd pass-culture-main
+        docker-compose -f docker-compose-app.yml pull flask && docker-compose -f docker-compose-app.yml up -d
+      env:
+        
+    # - name : Running Frontend
+    #   run : yarn start &
+
+    # - name : Running industrial sandbox
+    #   run: |
+    #         cd pass-culture-main
+    #         dockerize -wait http://localhost/health/api -timeout 5m -wait-retry-interval 5s
+    #         dockerize -wait http://localhost/health/database -timeout 5m -wait-retry-interval 5s
+    #         ./pc sandbox --name=industrial
+
+    # - name : Running end2end tests
+    #   run : yarn test:cafe
+
+    - name: Debug
+      run: docker ps 
