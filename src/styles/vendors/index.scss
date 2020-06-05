@@ -1,3 +1,7 @@
-@import '~react-toastify/dist/ReactToastify';
-@import '~react-datepicker/src/stylesheets/datepicker';
-@import '~la-sass-vy/lib/index.scss';
+@import "~react-toastify/dist/ReactToastify";
+@import "~react-datepicker/src/stylesheets/datepicker";
+@import "~la-sass-vy/lib/index.scss";
+
+.grecaptcha-badge {
+  visibility: hidden;
+}

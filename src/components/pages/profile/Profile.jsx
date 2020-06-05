@@ -10,11 +10,13 @@ import LegalNotice from './LegalNotice/LegalNotice'
 import MainView from './MainView/MainView'
 import PersonalInformationsContainer from './PersonalInformations/PersonalInformationsContainer'
 import User from './ValueObjects/User'
+import { useReCaptchaScript } from '../../../utils/recaptcha'
 
 const Profile = ({ user, history, location }) => {
   const pathToProfile = '/profil'
   const { email, departmentCode } = user
   const department = getDepartment(departmentCode)
+  useReCaptchaScript()
 
   return (
     <div className="page profile-page">

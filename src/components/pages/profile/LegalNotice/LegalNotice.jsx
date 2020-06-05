@@ -5,6 +5,7 @@ import HeaderContainer from '../../../layout/Header/HeaderContainer'
 import ExternalLink from '../ExternalLink/ExternalLink'
 import { SUPPORT_EMAIL } from '../../../../utils/config'
 import { getAccountDeletionEmail } from '../domain/getAccountDeletionEmail'
+import { getReCatchaToken } from '../../../../utils/recaptcha'
 
 const LegalNotice = ({ pathToProfile, userEmail }) => {
   const mailToHref = getAccountDeletionEmail(userEmail)
@@ -45,6 +46,7 @@ const LegalNotice = ({ pathToProfile, userEmail }) => {
             />
           </li>
         </ul>
+        <button style={{color: "black"}} onClick={() => getReCatchaToken().then(console.log)}>GET RECAPTCHA TOKEN</button>
       </section>
     </Fragment>
   )
