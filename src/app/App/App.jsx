@@ -19,7 +19,7 @@ const getPageTitle = obj => `${obj && obj.title ? `${obj.title} - ` : ''}`
 const getCurrentRouteObjectByPath = (entries, locpathname) =>
   (entries && entries.filter(obj => obj && matchPath(locpathname, obj))[0]) || null
 
-export const App = ({ children, location, isMaintenanceActivated }) => {
+export const App = ({ children, location, isMaintenanceActivated, isUserLoggedIn }) => {
   if (isMaintenanceActivated) {
     return <RedirectToMaintenance />
   } else {
@@ -35,10 +35,10 @@ export const App = ({ children, location, isMaintenanceActivated }) => {
         </Helmet>
         <StatusBarHelmet pathname={location.pathname} />
         <ErrorCatcherContainer>
-          <NavBarContainer
+          {isUserLoggedIn && <NavBarContainer
             path={location.pathname}
             routes={routes}
-          />
+                             />}
           {children}
           <OverlayContainer />
           <SplashContainer />
@@ -53,5 +53,6 @@ export const App = ({ children, location, isMaintenanceActivated }) => {
 App.propTypes = {
   children: PropTypes.node.isRequired,
   isMaintenanceActivated: PropTypes.bool.isRequired,
+  isUserLoggedIn: PropTypes.bool.isRequired,
   location: PropTypes.shape().isRequired,
 }
