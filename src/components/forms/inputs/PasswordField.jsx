@@ -14,8 +14,21 @@ class PasswordField extends PureComponent {
     this.state = { hidden: true }
   }
 
+  onClick = () => {
+    this.addNoOutlineOnClick()
+    this.handleOnToggleVisibility()
+  }
+
   handleOnToggleVisibility = () => {
     this.setState(prev => ({ hidden: !prev.hidden }))
+  }
+
+  addNoOutlineOnClick = () => {
+    document.getElementsByClassName('lpi-show-password')[0].classList.add('clicked')
+  }
+
+  removeNoOutlineOnClick = () => {
+    document.getElementsByClassName('lpi-show-password')[0].classList.remove('clicked')
   }
 
   renderField = ({ input, meta }) => {
@@ -43,8 +56,10 @@ class PasswordField extends PureComponent {
             type={inputType}
           />
           <button
-            className="no-background mx12 flex-0 is-primary-text"
-            onClick={this.handleOnToggleVisibility}
+            className="no-background mx12 flex-0 is-primary-text lpi-show-password"
+            onClick={this.onClick}
+            onMouseDown={this.addNoOutlineOnClick}
+            onMouseUp={this.removeNoOutlineOnClick}
             type="button"
           >
             <Icon
