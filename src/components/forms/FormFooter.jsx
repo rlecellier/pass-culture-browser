@@ -43,26 +43,20 @@ class FormFooter extends PureComponent {
     }
   }
 
-  renderExternalLink = options => {
-    const attributes = {
-      className: `flex-1 ${options.className || ''}`,
-      href: options.url,
-      id: options.id,
-      title: options.title,
-    }
-    return (
-      <a
-        {...attributes}
-        onClick={this.handleTracking}
-        onKeyPress={this.handleTracking}
-        role="button"
-        tabIndex="0"
-        target="_blank"
-      >
-        {options.label}
-      </a>
-    )
-  }
+  renderExternalLink = options => (
+    <a
+      className={`flex-1 ${options.className || ''}`}
+      href={options.url}
+      id={options.id}
+      onClick={this.handleTracking}
+      onKeyPress={this.handleTracking}
+      rel="noopener noreferrer"
+      target="_blank"
+      title={options.title}
+    >
+      {options.label}
+    </a>
+  )
 
   render() {
     const { cancel, externalLink, submit } = this.props
