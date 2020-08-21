@@ -25,6 +25,7 @@ const MyFavoritesList = ({ myFavorites, loadMyFavorites, persistDeleteFavorites 
   }
 
   useEffect(() => {
+    console.log("Loading favorites")
     loadMyFavorites(handleFail, handleSuccess)
   }, [loadMyFavorites])
 

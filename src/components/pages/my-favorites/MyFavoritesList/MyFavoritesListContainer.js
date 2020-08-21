@@ -9,7 +9,7 @@ export const mapStateToProps = state => ({
   myFavorites: selectFavorites(state),
 })
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   loadMyFavorites: (handleFail, handleSuccess) => {
     dispatch(
       requestData({
